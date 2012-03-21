@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
+import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
 
 @Repository
@@ -25,5 +26,9 @@ public class HibernateCharacterRepo implements CharacterRepo{
 	public void saveCharacter(EveCharacter character)
 	{
 		hibernateTemplate.save(character);
+	}
+
+	public void saveApiContext(ApiContext apiContext) {
+		hibernateTemplate.save(apiContext);
 	}
 }

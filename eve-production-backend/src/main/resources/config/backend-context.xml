@@ -10,5 +10,6 @@
 	<context:component-scan base-package="contiesta.production.backend" />
 	
 	<import resource="repo.xml" />
+	<import resource="marshallers.xml" />
 
 </beans>

@@ -14,7 +14,7 @@ import contiesta.production.backend.models.EveCharacter;
 
 @ContextConfiguration("classpath:config/backend-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TestHibernateCharacterRepo {
+public class IntegrationHibernateCharacterRepo {
 
 	@Autowired
 	private HibernateCharacterRepo repo;

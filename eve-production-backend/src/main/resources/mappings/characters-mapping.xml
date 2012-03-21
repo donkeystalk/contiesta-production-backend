@@ -1,0 +1,24 @@
+<mapping>
+	<class name="contiesta.production.backend.marshallers.CharactersMapping">
+		<map-to xml="eveapi" />
+		<field name="version" type="int">
+			<bind-xml name="version" node="attribute" />
+		</field>
+		
+		<field name="characters" type="contiesta.production.backend.models.EveCharacter"
+			collection="arraylist">
+			<bind-xml name="row" location="result/rowset" />	
+		</field>
+	</class>
+	<class name="contiesta.production.backend.models.EveCharacter">
+		<field name="name" type="string">
+			<bind-xml name="name" node="attribute" />
+		</field>
+		<field name="characterID" type="long">
+			<bind-xml name="characterID" node="attribute" />
+		</field>
+		<field name="corporationName" type="string">
+			<bind-xml name="corporationName" node="attribute" />
+		</field>
+	</class>
+</mapping>

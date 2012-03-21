@@ -3,11 +3,11 @@ package contiesta.production.backend.marshallers;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.util.List;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -16,11 +16,11 @@ import contiesta.production.backend.utils.ClassPathResourceUtil;
 
 @ContextConfiguration("classpath:config/backend-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
-public class TestCharactersMarshaller {
-	
-	@Autowired
-	private CharactersMarshaller marshaller;
+public class TestCharacterSheetMarshaller {
 
+	@Autowired
+	private CharacterSheetMarshaller marshaller;
+	
 	@Test
 	public void testInject()
 	{
@@ -28,11 +28,9 @@ public class TestCharactersMarshaller {
 	}
 	
 	@Test
-	public void testUnmarshallXMLToObject()
+	public void testUnmarshallXMLToObject() throws IOException
 	{
-		String xml = ClassPathResourceUtil.getResourceAsString("testFiles/characters.xml");
-		List<EveCharacter> characters = marshaller.unmarshallXMLToObject(xml);
-		assertNotNull(characters);
-		assertEquals(3,characters.size());
+		EveCharacter character = marshaller.unmarshallXMLToObject(ClassPathResourceUtil.getResourceAsString("testFiles/characterSheet.xml"));
+		assertNotNull(character);
 	}
 }

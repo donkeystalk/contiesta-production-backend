@@ -8,17 +8,24 @@ import org.springframework.core.io.ClassPathResource;
 
 public class ClassPathResourceUtil {
 
-	public static String getResourceAsString(String resourcePath) throws IOException
+	public static String getResourceAsString(String resourcePath)
 	{
-		ClassPathResource cpr = new ClassPathResource(resourcePath);
-		String out = "";
-		String line = "";
-		BufferedReader reader = new BufferedReader(new InputStreamReader(cpr.getInputStream()));
-		while((line = reader.readLine())!= null)
+		try
 		{
-			out = out.concat(line).concat("\n");
+			ClassPathResource cpr = new ClassPathResource(resourcePath);
+			String out = "";
+			String line = "";
+			BufferedReader reader = new BufferedReader(new InputStreamReader(cpr.getInputStream()));
+			while((line = reader.readLine())!= null)
+			{
+				out = out.concat(line).concat("\n");
+			}
+			return out;
 		}
-		return out;
+		catch(IOException e)
+		{
+			return null;
+		}
 	}
 	
 }

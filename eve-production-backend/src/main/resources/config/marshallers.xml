@@ -7,5 +7,5 @@
 		<property name="ignoreExtraAttributes" value="true" />
 		<property name="ignoreExtraElements" value="true" />
 		<property name="mappingLocation" value="classpath:mappings/characters-mapping.xml"/>
-	</bean> 
+	</bean>
 </beans>

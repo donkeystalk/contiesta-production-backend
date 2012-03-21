@@ -1,9 +1,12 @@
 package contiesta.production.backend.models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 @Entity
@@ -14,8 +17,19 @@ public class EveCharacter {
 	private long characterID;
 	private String corporationName;
 	
+	@OneToMany
+	private List<Skill> skills;
+	
 	@ManyToOne
 	private ApiContext apiContext;
+
+	public List<Skill> getSkills() {
+		return skills;
+	}
+
+	public void setSkills(List<Skill> skills) {
+		this.skills = skills;
+	}
 
 	public long getCharacterID() {
 		return characterID;

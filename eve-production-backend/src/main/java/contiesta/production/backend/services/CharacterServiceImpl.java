@@ -1,6 +1,5 @@
 package contiesta.production.backend.services;
 
-import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -11,9 +10,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
+import contiesta.production.backend.marshallers.CharacterSheetMarshaller;
 import contiesta.production.backend.marshallers.CharactersMarshaller;
 import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
+import contiesta.production.backend.models.Skill;
 import contiesta.production.backend.repos.CharacterRepo;
 import contiesta.production.backend.utils.ApiServiceUtils;
 
@@ -25,6 +26,8 @@ public class CharacterServiceImpl implements CharacterService{
 	
 	@Autowired
 	private CharactersMarshaller charactersMarshaller;
+	@Autowired
+	private CharacterSheetMarshaller characterSheetMarshaller;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CharacterServiceImpl.class);
 	
@@ -36,15 +39,14 @@ public class CharacterServiceImpl implements CharacterService{
 	public List<EveCharacter> findEveCharactersForApiContext(ApiContext context) {
 		RestTemplate rt = new RestTemplate();
 		ResponseEntity<String> re = rt.getForEntity(ApiServiceUtils.CHARACTERS_SERVICE, String.class, context.getKeyId(), context.getVerificationCode());
-		try
-		{
-			return charactersMarshaller.unmarshallXMLToObject(re.getBody());
-		}
-		catch(IOException e)
-		{
-			logger.error("Error while unmarshalling API context", e);
-		}
-		return null;
+		return charactersMarshaller.unmarshallXMLToObject(re.getBody());
+	}
+	
+	public List<Skill> findSkillsForCharacter(EveCharacter character)
+	{
+		RestTemplate rt = new RestTemplate();
+		ResponseEntity<String> re = rt.getForEntity(ApiServiceUtils.CHARACTER_SHEET_SERVICE, String.class, character.getApiContext().getKeyId(), character.getApiContext().getVerificationCode(), character.getName());
+		return characterSheetMarshaller.unmarshallXMLToObject(re.getBody()).getSkills();
 	}
 
 }

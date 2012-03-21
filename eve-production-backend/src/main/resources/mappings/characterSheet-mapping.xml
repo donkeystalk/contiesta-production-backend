@@ -1,0 +1,26 @@
+<mapping>
+	<class name="contiesta.production.backend.marshallers.CharacterSheetMapping">
+		<map-to xml="eveapi" />
+		<field name="skills" type="contiesta.production.backend.models.Skill"
+				collection="arraylist">
+			<bind-xml name="skillpoints" node="attribute" location="result/rowset" />
+		</field>
+		<field name="name" type="string">
+			<bind-xml name="name" node="element" location="result" />
+		</field>
+		<field name="currentTime" type="string">
+			<bind-xml name="currentTime" node="element" />
+		</field>
+	</class>
+	<class name="contiesta.production.backend.models.Skill">
+		<field name="typeID" type="int">
+			<bind-xml name="typeID" node="attribute" />
+		</field>
+		<field name="skillPoints" type="int">
+			<bind-xml name="skillpoints" node="attribute" />
+		</field>
+		<field name="level" type="int">
+			<bind-xml name="level" node="attribute" />
+		</field>
+	</class>
+</mapping>

@@ -17,8 +17,8 @@ import contiesta.production.backend.models.EveCharacter;
 @RunWith(SpringJUnit4ClassRunner.class)
 public class IntegrationCharacterServiceImpl {
 
-	private static final String KEY_ID = "Your Key Here";
-	private static final String VERIFICATION_CODE = "Your Verification Code Here";
+	private static final String KEY_ID = "542800";
+	private static final String VERIFICATION_CODE = "WJ2c99vYKqmKRQ12SuKXLtpo5jT8rKILbgmgVePK61iBYah9f77EgVZXRWCyRod3";
 	
 	@Autowired
 	private CharacterService service;
@@ -35,7 +35,7 @@ public class IntegrationCharacterServiceImpl {
 		context.setKeyId(KEY_ID);
 		context.setVerificationCode(VERIFICATION_CODE);
 		List<EveCharacter> characters = service.findEveCharactersForApiContext(context);
-		assertNotNull(characters);		
+		assertNotNull(characters);
 	}
 	
 }

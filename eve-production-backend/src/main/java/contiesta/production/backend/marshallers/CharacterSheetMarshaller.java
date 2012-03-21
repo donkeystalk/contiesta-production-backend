@@ -1,43 +1,43 @@
 package contiesta.production.backend.marshallers;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringReader;
+import java.security.KeyStore.Builder;
 import java.util.List;
 
-import javax.xml.stream.events.Characters;
 import javax.xml.transform.stream.StreamSource;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.io.SAXReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.oxm.Unmarshaller;
-import org.springframework.oxm.XmlMappingException;
 import org.springframework.stereotype.Component;
 
 import contiesta.production.backend.models.EveCharacter;
+import contiesta.production.backend.models.Skill;
 
 @Component
-public class CharactersMarshaller implements EveMarshaller<List<EveCharacter>>{
+public class CharacterSheetMarshaller{
 
-	@Autowired
-	@Qualifier(value="charactersCastorMarshaller")
-	private Unmarshaller unmarshaller;
-	
 	private static final Logger logger = LoggerFactory.getLogger(CharactersMarshaller.class);
 	
-	public List<EveCharacter> unmarshallXMLToObject(String xml)
-	{
-		StringReader sr = new StringReader(xml);
-		try
-		{
-			CharactersMapping marshallObj = (CharactersMapping)unmarshaller.unmarshal(new StreamSource(sr));
-			return marshallObj.getCharacters();
+	public EveCharacter unmarshallXMLToObject(String xml) {
+		try{
+			Document document = DocumentHelper.parseText(xml);
+			EveCharacter character = new EveCharacter();
+			return character;
 		}
-		catch(IOException e)
+		catch(DocumentException e)
 		{
-			logger.error("Error while marshalling", e);
+			logger.error("Error parsing XML", e);
 		}
 		return null;
 	}
+
 }

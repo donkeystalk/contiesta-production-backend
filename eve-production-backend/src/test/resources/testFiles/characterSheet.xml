@@ -1,0 +1,67 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<eveapi version="2">
+  <currentTime>2010-10-05 20:28:55</currentTime>
+  <result>
+    <characterID>150365921</characterID>
+    <name>Gummi Test1</name>
+    <race>Minmatar</race>
+    <bloodline>Sebiestor</bloodline>
+    <gender>Male</gender>
+    <corporationName>Starbase Anchoring Corp</corporationName>
+    <corporationID>150279367</corporationID>
+    <allianceName>Fred's Alliance</allianceName>
+    <allianceID>123456789</allianceID>
+    <cloneName>Clone Grade Pi</cloneName>
+    <cloneSkillPoints>54600000</cloneSkillPoints>
+    <balance>5000.00</balance>
+    <attributeEnhancers>
+      <memoryBonus> 
+        <augmentatorName>Memory Augmentation - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </memoryBonus>
+      <willpowerBonus>
+        <augmentatorName>Neural Boost - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </willpowerBonus>
+      <perceptionBonus>
+        <augmentatorName>Ocular Filter - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </perceptionBonus>
+      <intelligenceBonus>
+        <augmentatorName>Cybernetic Subprocessor - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </intelligenceBonus>
+      <charismaBonus>
+        <augmentatorName>Social Adaptation Chip - Improved</augmentatorName>
+        <augmentatorValue>5</augmentatorValue>
+      </charismaBonus>
+    </attributeEnhancers>
+    <attributes>
+      <intelligence>13</intelligence>
+      <memory>9</memory>
+      <charisma>6</charisma>
+      <perception>5</perception>
+      <willpower>6</willpower>
+    </attributes>
+    <rowset name="skills" key="typeID" columns="typeID,skillpoints,level,unpublished">
+      <row typeID="3308" skillpoints="1280000" level="5" />
+      <row typeID="3326" skillpoints="573067" level="4" />
+    </rowset>
+    <rowset name="certificates" key="certificateID" columns="certificateID">
+      <row certificateID="68" />
+      <row certificateID="107" />
+      <row certificateID="69" />
+      <row certificateID="70" />
+    </rowset>
+    <rowset name="corporationRoles" key="roleID" columns="roleID,roleName">
+      <row roleID="1" roleName="roleDirector" />
+    </rowset>
+    <rowset name="corporationRolesAtHQ" key="roleID" columns="roleID,roleName">
+      <row roleID="1" roleName="roleDirector" />
+    </rowset>
+    <rowset name="corporationTitles" key="titleID" columns="titleID,titleName">
+      <row titleID="1" titleName="Member" />
+    </rowset>
+  </result>
+  <cachedUntil>2010-10-05 21:28:55</cachedUntil>
+</eveapi>

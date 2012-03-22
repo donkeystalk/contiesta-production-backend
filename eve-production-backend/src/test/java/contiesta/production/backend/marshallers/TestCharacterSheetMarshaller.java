@@ -31,6 +31,10 @@ public class TestCharacterSheetMarshaller {
 	public void testUnmarshallXMLToObject() throws IOException
 	{
 		EveCharacter character = marshaller.unmarshallXMLToObject(ClassPathResourceUtil.getResourceAsString("testFiles/characterSheet.xml"));
-		assertNotNull(character);
+		assertNotNull(character.getSkills());
+		assertEquals(2, character.getSkills().size());
+		assertEquals(150365921, character.getCharacterID());
+		assertEquals("Gummi Test1", character.getName());
+		assertEquals("Starbase Anchoring Corp", character.getCorporationName());
 	}
 }

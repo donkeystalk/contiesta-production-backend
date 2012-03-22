@@ -7,7 +7,6 @@ import java.io.IOException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -31,8 +30,8 @@ public class TestCharacterSheetMarshaller {
 	public void testUnmarshallXMLToObject() throws IOException
 	{
 		EveCharacter character = marshaller.unmarshallXMLToObject(ClassPathResourceUtil.getResourceAsString("testFiles/characterSheet.xml"));
-		assertNotNull(character.getSkills());
-		assertEquals(2, character.getSkills().size());
+		assertNotNull(character.getTrainedSkills());
+		assertEquals(2, character.getTrainedSkills().size());
 		assertEquals(150365921, character.getCharacterID());
 		assertEquals("Gummi Test1", character.getName());
 		assertEquals("Starbase Anchoring Corp", character.getCorporationName());

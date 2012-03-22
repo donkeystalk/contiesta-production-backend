@@ -25,18 +25,4 @@ public class IntegrationHibernateCharacterRepo {
 		assertNotNull(repo);
 	}
 	
-	@Test
-	@Rollback(true)
-	@Transactional
-	public void testFindCharacterByName()
-	{
-		EveCharacter ec = new EveCharacter();
-		ec.setName("dardo");
-		repo.saveCharacter(ec);
-		ec = null;
-		ec = repo.findCharacterByName("dardo");
-		assertNotNull(ec);
-		assertEquals("dardo", ec.getName());
-	}
-	
 }

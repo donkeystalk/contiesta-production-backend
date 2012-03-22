@@ -1,5 +1,7 @@
 package contiesta.production.backend.repos;
 
+import java.util.List;
+
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate3.HibernateTemplate;
@@ -18,17 +20,21 @@ public class HibernateCharacterRepo implements CharacterRepo{
 	{
 		hibernateTemplate = new HibernateTemplate(sessionFactory);
 	}
-	
-	public EveCharacter findCharacterByName(String name) {
-		return hibernateTemplate.get(EveCharacter.class, name);
+
+	public <T> void save(T object) {
+		hibernateTemplate.save(object);
 	}
 
-	public void saveCharacter(EveCharacter character)
+	public ApiContext findApiContextByID(String keyID)
 	{
-		hibernateTemplate.save(character);
+		return hibernateTemplate.get(ApiContext.class, keyID);
 	}
 
-	public void saveApiContext(ApiContext apiContext) {
-		hibernateTemplate.save(apiContext);
+	public List<ApiContext> findAllApiContext() {
+		return hibernateTemplate.find("from ApiContext");
+	}
+
+	public <T> void delete(T obj) {
+		hibernateTemplate.delete(obj);		
 	}
 }

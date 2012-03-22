@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class ApiContext {
 
@@ -13,14 +16,15 @@ public class ApiContext {
 	private String keyId;
 	private String verificationCode;
 	
-	@OneToMany(mappedBy="apiContext")
-	private List<EveCharacter> eveCharacter;
+	@Cascade(value=CascadeType.ALL)
+	@OneToMany(mappedBy="apiContext", orphanRemoval=true)
+	private List<EveCharacter> eveCharacters;
 	
-	public List<EveCharacter> getEveCharacter() {
-		return eveCharacter;
+	public List<EveCharacter> getEveCharacters() {
+		return eveCharacters;
 	}
-	public void setEveCharacter(List<EveCharacter> eveCharacter) {
-		this.eveCharacter = eveCharacter;
+	public void setEveCharacters(List<EveCharacter> eveCharacters) {
+		this.eveCharacters = eveCharacters;
 	}
 	public String getKeyId() {
 		return keyId;

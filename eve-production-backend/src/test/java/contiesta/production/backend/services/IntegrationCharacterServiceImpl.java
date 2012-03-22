@@ -7,8 +7,10 @@ import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
@@ -30,12 +32,31 @@ public class IntegrationCharacterServiceImpl {
 	}
 	
 	@Test
-	public void testFindEveCharactersForApiContext() {
+	public void testRemoveApiContext()
+	{
 		ApiContext context = new ApiContext();
 		context.setKeyId(KEY_ID);
 		context.setVerificationCode(VERIFICATION_CODE);
-		List<EveCharacter> characters = service.findEveCharactersForApiContext(context);
-		assertNotNull(characters);
+		service.removeApiContext(context);
+	}
+	
+	@Test
+	@Transactional
+	public void testCreateApiContext()
+	{
+		ApiContext context = new ApiContext();
+		context.setKeyId(KEY_ID);
+		context.setVerificationCode(VERIFICATION_CODE);
+		service.createApiContext(context);
+		List<ApiContext> contexts = service.findAllApiContext();
+		assertEquals(1, contexts.size());
+		for(ApiContext c : contexts)
+		{
+			for(EveCharacter e : c.getEveCharacters())
+			{
+				assertNotNull(e.getTrainedSkills());
+			}
+		}
 	}
 	
 }

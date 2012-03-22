@@ -7,7 +7,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 @Entity
 public class EveCharacter {
@@ -18,17 +17,17 @@ public class EveCharacter {
 	private String corporationName;
 	
 	@OneToMany
-	private List<Skill> skills;
-	
+	private List<TrainedSkill> trainedSkills;
+
 	@ManyToOne
 	private ApiContext apiContext;
-
-	public List<Skill> getSkills() {
-		return skills;
+	
+	public List<TrainedSkill> getTrainedSkills() {
+		return trainedSkills;
 	}
 
-	public void setSkills(List<Skill> skills) {
-		this.skills = skills;
+	public void setTrainedSkills(List<TrainedSkill> trainedSkills) {
+		this.trainedSkills = trainedSkills;
 	}
 
 	public long getCharacterID() {

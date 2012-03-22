@@ -10,7 +10,7 @@ import org.dom4j.tree.DefaultElement;
 import org.springframework.stereotype.Component;
 
 import contiesta.production.backend.models.EveCharacter;
-import contiesta.production.backend.models.Skill;
+import contiesta.production.backend.models.TrainedSkill;
 import contiesta.production.backend.utils.XPathUtils;
 
 @Component
@@ -37,7 +37,7 @@ public class CharacterSheetMarshaller{
 		{
 			Document doc = DocumentHelper.parseText(xml);
 			character.setCharacterID(Long.parseLong(XPathUtils.parseForText(doc, CHARACTER_ID_XPATH)));
-			character.setSkills(parseForSkills(XPathUtils.parseForListOfElements(doc, SKILLS_XPATH)));
+			character.setTrainedSkills(parseForSkills(XPathUtils.parseForListOfElements(doc, SKILLS_XPATH)));
 			character.setName(XPathUtils.parseForText(doc, NAME_XPATH));
 			character.setCorporationName(XPathUtils.parseForText(doc, CORP_NAME_XPATH));
 			return character;
@@ -49,12 +49,12 @@ public class CharacterSheetMarshaller{
 		return null;
 	}
 	
-	protected List<Skill> parseForSkills(List<DefaultElement> elements)
+	protected List<TrainedSkill> parseForSkills(List<DefaultElement> elements)
 	{
-		List<Skill> retVal = new ArrayList<Skill>();
+		List<TrainedSkill> retVal = new ArrayList<TrainedSkill>();
 		for(DefaultElement s : elements)
 		{
-			Skill skill = new Skill();
+			TrainedSkill skill = new TrainedSkill();
 			skill.setTypeID(Integer.parseInt(s.attribute("typeID").getValue()));
 			skill.setSkillPoints(Integer.parseInt(s.attribute("skillpoints").getValue()));
 			skill.setLevel(Integer.parseInt(s.attribute("level").getValue()));

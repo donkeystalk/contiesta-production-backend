@@ -32,7 +32,6 @@ public class TestCharacterSheetMarshaller {
 		EveCharacter character = marshaller.unmarshallXMLToObject(ClassPathResourceUtil.getResourceAsString("testFiles/characterSheet.xml"));
 		assertNotNull(character.getTrainedSkills());
 		assertEquals(2, character.getTrainedSkills().size());
-		assertEquals(150365921, character.getCharacterID());
 		assertEquals("Gummi Test1", character.getName());
 		assertEquals("Starbase Anchoring Corp", character.getCorporationName());
 	}

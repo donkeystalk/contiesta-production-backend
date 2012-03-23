@@ -8,34 +8,39 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 @Entity
 public class EveCharacter {
 	
 	@Id
+	private int characterId;
 	private String name;
-	private long characterID;
 	private String corporationName;
 	
-	@OneToMany
+	@OneToMany(mappedBy="eveCharacter")
+	@Cascade(value=CascadeType.ALL)
 	private List<TrainedSkill> trainedSkills;
 
 	@ManyToOne
+	@JoinColumn(name="apiId")
 	private ApiContext apiContext;
-	
+
+	public int getCharacterId() {
+		return characterId;
+	}
+
+	public void setCharacterId(int characterId) {
+		this.characterId = characterId;
+	}
+
 	public List<TrainedSkill> getTrainedSkills() {
 		return trainedSkills;
 	}
 
 	public void setTrainedSkills(List<TrainedSkill> trainedSkills) {
 		this.trainedSkills = trainedSkills;
-	}
-
-	public long getCharacterID() {
-		return characterID;
-	}
-
-	public void setCharacterID(long characterID) {
-		this.characterID = characterID;
 	}
 
 	public String getCorporationName() {

@@ -1,42 +1,43 @@
 package contiesta.production.backend.marshallers;
 
-import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.stream.events.Characters;
-import javax.xml.transform.stream.StreamSource;
-
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.tree.DefaultElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.oxm.Unmarshaller;
-import org.springframework.oxm.XmlMappingException;
 import org.springframework.stereotype.Component;
 
-import contiesta.production.backend.models.EveCharacter;
+import contiesta.production.backend.utils.XPathUtils;
 
 @Component
-public class CharactersMarshaller implements EveMarshaller<List<EveCharacter>>{
+public class CharactersMarshaller {
 
-	@Autowired
-	@Qualifier(value="charactersCastorMarshaller")
-	private Unmarshaller unmarshaller;
-	
 	private static final Logger logger = LoggerFactory.getLogger(CharactersMarshaller.class);
 	
-	public List<EveCharacter> unmarshallXMLToObject(String xml)
+	private static final String NAMES_XPATH = "//rowset[@name='characters']/row";
+	
+	public List<String> findCharacterIds(String xml)
 	{
 		StringReader sr = new StringReader(xml);
 		try
 		{
-			CharactersMapping marshallObj = (CharactersMapping)unmarshaller.unmarshal(new StreamSource(sr));
-			return marshallObj.getCharacters();
+			Document doc = DocumentHelper.parseText(xml);
+			List<DefaultElement> elements = XPathUtils.parseForListOfElements(doc, NAMES_XPATH);
+			List<String> retVal = new ArrayList<String>();
+			for(DefaultElement e : elements)
+			{
+				retVal.add(e.attributeValue("characterID"));
+			}
+			return retVal;
 		}
-		catch(IOException e)
+		catch(DocumentException e)
 		{
-			logger.error("Error while marshalling", e);
+			logger.error("Error parsing XML", e);
 		}
 		return null;
 	}

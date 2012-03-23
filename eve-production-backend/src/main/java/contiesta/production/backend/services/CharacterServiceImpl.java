@@ -39,20 +39,15 @@ public class CharacterServiceImpl implements CharacterService{
 	 * False - ApiContext already exists
 	 */
 	@Transactional
-	public boolean createApiContext(ApiContext context)
+	public void createApiContext(ApiContext context)
 	{
-		if(characterRepo.findApiContextByID(context.getKeyId()) != null)
-		{
-			return false;
-		}
 		List<EveCharacter> chars = new ArrayList<EveCharacter>();
-		for(EveCharacter c : findEveCharactersForApiContext(context))
+		for(String c : findEveCharacterIdsApiContext(context))
 		{
-			chars.add(findCharacterSheet(context, c.getName()));
+			chars.add(findCharacterSheet(context, c));
 		}
 		context.setEveCharacters(chars);
 		characterRepo.save(context);
-		return true;
 	}
 
 	@Transactional
@@ -61,17 +56,19 @@ public class CharacterServiceImpl implements CharacterService{
 		return characterRepo.findAllApiContext();
 	}
 	
-	public List<EveCharacter> findEveCharactersForApiContext(ApiContext context) {
+	public List<String> findEveCharacterIdsApiContext(ApiContext context) {
 		RestTemplate rt = new RestTemplate();
 		ResponseEntity<String> re = rt.getForEntity(ApiServiceUtils.CHARACTERS_SERVICE, String.class, context.getKeyId(), context.getVerificationCode());
-		return charactersMarshaller.unmarshallXMLToObject(re.getBody());
+		return charactersMarshaller.findCharacterIds(re.getBody());
 	}
 	
-	public EveCharacter findCharacterSheet(ApiContext context, String name)
+	public EveCharacter findCharacterSheet(ApiContext context, String id)
 	{
 		RestTemplate rt = new RestTemplate();
-		ResponseEntity<String> re = rt.getForEntity(ApiServiceUtils.CHARACTER_SHEET_SERVICE, String.class, context.getKeyId(), context.getVerificationCode(), name);
-		return characterSheetMarshaller.unmarshallXMLToObject(re.getBody());
+		ResponseEntity<String> re = rt.getForEntity(ApiServiceUtils.CHARACTER_SHEET_SERVICE, String.class, context.getKeyId(), context.getVerificationCode(), id);
+		EveCharacter retVal = characterSheetMarshaller.unmarshallXMLToObject(re.getBody());
+		retVal.setApiContext(context);
+		return retVal;
 	}
 
 	@Transactional

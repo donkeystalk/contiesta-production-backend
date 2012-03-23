@@ -1,7 +1,10 @@
 package contiesta.production.backend.models;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -12,21 +15,27 @@ import org.hibernate.annotations.CascadeType;
 public class TrainedSkill {
 
 	@Id
+	@GeneratedValue
+	private int id;
 	private int typeID;
 	private int skillPoints;
 	private int level;
 	
-	@OneToOne
+	@ManyToOne
+	@JoinColumn(name="characterID")
+	private EveCharacter eveCharacter;
+	
+	/*@OneToOne
 	@PrimaryKeyJoinColumn
 	@Cascade(value=CascadeType.SAVE_UPDATE)
-	private Skill skill;
+	private Skill skill;*/
 	
-	public Skill getSkill() {
-		return skill;
+	public EveCharacter getEveCharacter() {
+		return eveCharacter;
 	}
-	public void setSkill(Skill skill) {
-		this.skill = skill;
-	}
+	public void setEveCharacter(EveCharacter eveCharacter) {
+		this.eveCharacter = eveCharacter;
+	}	
 	public int getTypeID() {
 		return typeID;
 	}
@@ -44,6 +53,12 @@ public class TrainedSkill {
 	}
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	
 }

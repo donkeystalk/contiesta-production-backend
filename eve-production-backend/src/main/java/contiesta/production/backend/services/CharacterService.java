@@ -7,7 +7,7 @@ import contiesta.production.backend.models.EveCharacter;
 
 public interface CharacterService {
 	List<ApiContext> findAllApiContext();
-	List<EveCharacter> findEveCharactersForApiContext(ApiContext context);
-	boolean createApiContext(ApiContext context);
+	List<String> findEveCharacterIdsApiContext(ApiContext context);
+	void createApiContext(ApiContext context);
 	void removeApiContext(ApiContext context);
 }

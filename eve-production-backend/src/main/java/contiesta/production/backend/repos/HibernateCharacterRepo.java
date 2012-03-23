@@ -8,7 +8,6 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import contiesta.production.backend.models.ApiContext;
-import contiesta.production.backend.models.EveCharacter;
 
 @Repository
 public class HibernateCharacterRepo implements CharacterRepo{
@@ -23,11 +22,6 @@ public class HibernateCharacterRepo implements CharacterRepo{
 
 	public <T> void save(T object) {
 		hibernateTemplate.save(object);
-	}
-
-	public ApiContext findApiContextByID(String keyID)
-	{
-		return hibernateTemplate.get(ApiContext.class, keyID);
 	}
 
 	public List<ApiContext> findAllApiContext() {

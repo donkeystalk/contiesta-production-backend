@@ -31,7 +31,7 @@ public class TestCharactersMarshaller {
 	public void testUnmarshallXMLToObject()
 	{
 		String xml = ClassPathResourceUtil.getResourceAsString("testFiles/characters.xml");
-		List<EveCharacter> characters = marshaller.unmarshallXMLToObject(xml);
+		List<String> characters = marshaller.findCharacterIds(xml);
 		assertNotNull(characters);
 		assertEquals(3,characters.size());
 	}

@@ -36,10 +36,10 @@ public class CharacterSheetMarshaller{
 		try
 		{
 			Document doc = DocumentHelper.parseText(xml);
-			character.setCharacterID(Long.parseLong(XPathUtils.parseForText(doc, CHARACTER_ID_XPATH)));
-			character.setTrainedSkills(parseForSkills(XPathUtils.parseForListOfElements(doc, SKILLS_XPATH)));
+			character.setTrainedSkills(parseForSkills(XPathUtils.parseForListOfElements(doc, SKILLS_XPATH), character));
 			character.setName(XPathUtils.parseForText(doc, NAME_XPATH));
 			character.setCorporationName(XPathUtils.parseForText(doc, CORP_NAME_XPATH));
+			character.setCharacterId(Integer.parseInt(XPathUtils.parseForText(doc, CHARACTER_ID_XPATH)));
 			return character;
 		}
 		catch(DocumentException e)
@@ -49,7 +49,7 @@ public class CharacterSheetMarshaller{
 		return null;
 	}
 	
-	protected List<TrainedSkill> parseForSkills(List<DefaultElement> elements)
+	protected List<TrainedSkill> parseForSkills(List<DefaultElement> elements, EveCharacter c)
 	{
 		List<TrainedSkill> retVal = new ArrayList<TrainedSkill>();
 		for(DefaultElement s : elements)
@@ -58,6 +58,7 @@ public class CharacterSheetMarshaller{
 			skill.setTypeID(Integer.parseInt(s.attribute("typeID").getValue()));
 			skill.setSkillPoints(Integer.parseInt(s.attribute("skillpoints").getValue()));
 			skill.setLevel(Integer.parseInt(s.attribute("level").getValue()));
+			skill.setEveCharacter(c);
 			retVal.add(skill);
 		}
 		return retVal;

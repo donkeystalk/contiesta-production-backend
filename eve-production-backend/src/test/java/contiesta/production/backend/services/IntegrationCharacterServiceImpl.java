@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
 
+//@ContextConfiguration("classpath:config/mysql-test-context.xml")
 @ContextConfiguration("classpath:config/backend-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class IntegrationCharacterServiceImpl {
@@ -41,22 +42,13 @@ public class IntegrationCharacterServiceImpl {
 	}
 	
 	@Test
-	@Transactional
+	@Rollback(false)
 	public void testCreateApiContext()
 	{
 		ApiContext context = new ApiContext();
 		context.setKeyId(KEY_ID);
 		context.setVerificationCode(VERIFICATION_CODE);
 		service.createApiContext(context);
-		List<ApiContext> contexts = service.findAllApiContext();
-		assertEquals(1, contexts.size());
-		for(ApiContext c : contexts)
-		{
-			for(EveCharacter e : c.getEveCharacters())
-			{
-				assertNotNull(e.getTrainedSkills());
-			}
-		}
 	}
 	
 }

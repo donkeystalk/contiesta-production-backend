@@ -21,15 +21,19 @@ public class TrainedSkill {
 	private int skillPoints;
 	private int level;
 	
+	@JoinColumn(name="typeID", referencedColumnName="typeName", insertable=false, updatable=false)
+	private String name;
+	
 	@ManyToOne
 	@JoinColumn(name="characterID")
 	private EveCharacter eveCharacter;
 	
-	/*@OneToOne
-	@PrimaryKeyJoinColumn
-	@Cascade(value=CascadeType.SAVE_UPDATE)
-	private Skill skill;*/
-	
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
 	public EveCharacter getEveCharacter() {
 		return eveCharacter;
 	}

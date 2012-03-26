@@ -2,6 +2,7 @@ package contiesta.production.backend.repos;
 
 import static org.junit.Assert.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +58,14 @@ public class IntegrationHibernateCharacterRepo {
 		repo.save(c);
 	}
 
+	@Test
+	public void testDeleteApiContext()
+	{
+		ApiContext context = repo.findByKey(ApiContext.class, 1);
+		assertNotNull(context);
+		repo.delete(context);
+	}
+	
 	private EveCharacter createEveCharacter(ApiContext c, int i) {
 		EveCharacter e = new EveCharacter();
 		e.setApiContext(c);

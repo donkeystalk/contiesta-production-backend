@@ -8,7 +8,7 @@ public class Skill {
 
 	@Id
 	private int typeID;
-	private String name;
+	private String typeName;
 	
 	public int getTypeID() {
 		return typeID;
@@ -16,11 +16,10 @@ public class Skill {
 	public void setTypeID(int typeID) {
 		this.typeID = typeID;
 	}
-	public String getName() {
-		return name;
+	public String getTypeName() {
+		return typeName;
 	}
-	public void setName(String name) {
-		this.name = name;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
-	
 }

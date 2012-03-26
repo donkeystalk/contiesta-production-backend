@@ -1,5 +1,6 @@
 package contiesta.production.backend.repos;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.SessionFactory;
@@ -29,6 +30,11 @@ public class HibernateCharacterRepo implements CharacterRepo{
 	}
 
 	public <T> void delete(T obj) {
-		hibernateTemplate.delete(obj);		
+		hibernateTemplate.delete(obj);
+	}
+
+	@Override
+	public <T> T findByKey(Class<T> c, int key) {
+		return hibernateTemplate.get(c, key);
 	}
 }

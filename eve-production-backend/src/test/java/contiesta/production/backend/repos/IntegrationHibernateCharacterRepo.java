@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
 import contiesta.production.backend.models.TrainedSkill;
 
-@ContextConfiguration("classpath:config/mysql-test-context.xml")
+@ContextConfiguration("classpath:config/backend-context.xml")
 @RunWith(SpringJUnit4ClassRunner.class)
 public class IntegrationHibernateCharacterRepo {
 
@@ -27,6 +28,8 @@ public class IntegrationHibernateCharacterRepo {
 
 	private static final String KEY_ID = "542800";
 	private static final String VERIFICATION_CODE = "WJ2c99vYKqmKRQ12SuKXLtpo5jT8rKILbgmgVePK61iBYah9f77EgVZXRWCyRod3";
+	
+	private static final Logger logger = Logger.getLogger(IntegrationHibernateCharacterRepo.class);
 	
 	@Test
 	public void testInject()
@@ -66,6 +69,16 @@ public class IntegrationHibernateCharacterRepo {
 		repo.delete(context);
 	}
 	
+	@Test
+	@Transactional
+	public void testFindSkillLevelForTrainedSkill()
+	{
+		int charId = 790502185;
+		int typeId = 3308;
+		int level = repo.findSkillLevelForTrainedSkill(charId, typeId);
+		logger.info(level);
+	}
+	
 	private EveCharacter createEveCharacter(ApiContext c, int i) {
 		EveCharacter e = new EveCharacter();
 		e.setApiContext(c);
@@ -91,7 +104,7 @@ public class IntegrationHibernateCharacterRepo {
 		s.setEveCharacter(e);
 		s.setLevel(2);
 		s.setSkillPoints(256000);
-		s.setTypeID(1234);
+		s.setTypeId(1234);
 		return s;
 	}
 	

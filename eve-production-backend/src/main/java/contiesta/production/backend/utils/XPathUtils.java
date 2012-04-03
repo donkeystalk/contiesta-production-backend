@@ -16,4 +16,9 @@ public class XPathUtils {
 	{
 		return doc.selectNodes(xpath);
 	}
+	
+	public static String parseElementForAttribute(DefaultElement element, String xpath)
+	{
+		return element.attributeValue(xpath);
+	}
 }

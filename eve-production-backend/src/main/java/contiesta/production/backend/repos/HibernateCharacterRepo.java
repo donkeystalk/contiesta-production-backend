@@ -9,6 +9,8 @@ import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.stereotype.Repository;
 
 import contiesta.production.backend.models.ApiContext;
+import contiesta.production.backend.models.Skill;
+import contiesta.production.backend.models.TrainedSkill;
 
 @Repository
 public class HibernateCharacterRepo implements CharacterRepo{
@@ -33,8 +35,23 @@ public class HibernateCharacterRepo implements CharacterRepo{
 		hibernateTemplate.delete(obj);
 	}
 
-	@Override
 	public <T> T findByKey(Class<T> c, int key) {
 		return hibernateTemplate.get(c, key);
 	}
+
+	public ApiContext findByContextKey(String id) {
+		return (ApiContext)hibernateTemplate.find("from ApiContext where keyId = ?", id).get(0);
+	}
+
+	public int findSkillLevelForTrainedSkill(int characterId, int typeId) {
+		String[] paramNames = new String[]{"characterId", "typeId"};
+		Object[] params = new Object[]{characterId, typeId};
+		List<TrainedSkill> skills = hibernateTemplate.findByNamedParam("from TrainedSkill where characterId = :characterId and typeId = :typeId", paramNames, params);
+		if(skills != null && skills.size() == 1)
+		{
+			return skills.get(0).getLevel();
+		}
+		return 0;
+	}	
+	
 }

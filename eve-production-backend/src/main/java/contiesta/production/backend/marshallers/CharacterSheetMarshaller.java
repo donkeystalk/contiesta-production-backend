@@ -55,7 +55,7 @@ public class CharacterSheetMarshaller{
 		for(DefaultElement s : elements)
 		{
 			TrainedSkill skill = new TrainedSkill();
-			skill.setTypeID(Integer.parseInt(s.attribute("typeID").getValue()));
+			skill.setTypeId(Integer.parseInt(s.attribute("typeID").getValue()));
 			skill.setSkillPoints(Integer.parseInt(s.attribute("skillpoints").getValue()));
 			skill.setLevel(Integer.parseInt(s.attribute("level").getValue()));
 			skill.setEveCharacter(c);

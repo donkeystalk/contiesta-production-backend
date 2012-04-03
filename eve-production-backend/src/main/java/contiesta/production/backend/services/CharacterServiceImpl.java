@@ -15,6 +15,12 @@ import contiesta.production.backend.marshallers.CharacterSheetMarshaller;
 import contiesta.production.backend.marshallers.CharactersMarshaller;
 import contiesta.production.backend.models.ApiContext;
 import contiesta.production.backend.models.EveCharacter;
+import contiesta.production.backend.models.IndustryContext;
+import contiesta.production.backend.models.ItemType;
+import contiesta.production.backend.models.Job;
+import contiesta.production.backend.models.JobContext;
+import contiesta.production.backend.models.ScienceContext;
+import contiesta.production.backend.models.Skill;
 import contiesta.production.backend.models.TrainedSkill;
 import contiesta.production.backend.repos.CharacterRepo;
 import contiesta.production.backend.utils.ApiServiceUtils;
@@ -39,21 +45,38 @@ public class CharacterServiceImpl implements CharacterService{
 	 * False - ApiContext already exists
 	 */
 	@Transactional
-	public void createApiContext(ApiContext context)
+	public boolean createApiContext(ApiContext context)
 	{
 		List<EveCharacter> chars = new ArrayList<EveCharacter>();
 		for(String c : findEveCharacterIdsApiContext(context))
 		{
 			chars.add(findCharacterSheet(context, c));
 		}
+		if(chars.isEmpty())
+		{
+			return false;
+		}
 		context.setEveCharacters(chars);
 		characterRepo.save(context);
+		return true;
 	}
 
 	@Transactional
 	public List<ApiContext> findAllApiContext()
 	{
 		return characterRepo.findAllApiContext();
+	}
+	
+	@Transactional
+	public List<EveCharacter> findEveCharactersByKeyId(String id)
+	{
+		ApiContext context = characterRepo.findByContextKey(id);
+		List<EveCharacter> retVal = new ArrayList<EveCharacter>();
+		for(EveCharacter e : context.getEveCharacters())
+		{
+			retVal.add(e);
+		}
+		return retVal;
 	}
 	
 	public List<String> findEveCharacterIdsApiContext(ApiContext context) {
@@ -72,8 +95,66 @@ public class CharacterServiceImpl implements CharacterService{
 	}
 
 	@Transactional
-	public void removeApiContext(ApiContext context) {
+	public void removeApiContext(String id) {
+		ApiContext context = characterRepo.findByContextKey(id);
 		characterRepo.delete(context);
 	}
 
+	@Transactional
+	public List<JobContext> findAllIndustryJobs() {
+		List<ApiContext> contexts = characterRepo.findAllApiContext();
+		List<JobContext> jbs = new ArrayList<JobContext>();
+		RestTemplate rt = new RestTemplate();
+		for(ApiContext c : contexts)
+		{
+			for(EveCharacter e : c.getEveCharacters())
+			{
+				JobContext job = new JobContext();
+				job.setIndustryContext(new IndustryContext());
+				job.setScienceContext(new ScienceContext());
+				ResponseEntity<String> entity = rt.getForEntity(ApiServiceUtils.CHARACTERS_INDUSTRY_JOBS, String.class, c.getKeyId(), c.getVerificationCode(), e.getCharacterId());
+				job.setJobs(charactersMarshaller.findNumberOfJobsForCharacter(entity.getBody()));
+				parseJobs(job);
+				job.setName(e.getName());
+								   // Advanced Mass Production
+				job.getIndustryContext().setTotalPossible(characterRepo.findSkillLevelForTrainedSkill(e.getCharacterId(), 24625) 
+								   // Mass Production
+								   + characterRepo.findSkillLevelForTrainedSkill(e.getCharacterId(), 3387)
+								   // +1 for every character having 1 initial job
+								   + 1);
+								   // Laboratory Operation
+				job.getScienceContext().setTotalPossible(characterRepo.findSkillLevelForTrainedSkill(e.getCharacterId(), 3406) 
+								   // Advanced Laboratory Operation
+								   + characterRepo.findSkillLevelForTrainedSkill(e.getCharacterId(), 24624)
+								   // +1 for every character having 1 initial job
+								   + 1);
+				
+				jbs.add(job);
+			}
+		}
+		return jbs;
+	}
+	
+	private void parseJobs(JobContext jc)
+	{
+		for(Job j : jc.getJobs())
+		{
+			if(j.getBlueprintTypeId() == j.getOutputTypeId())
+			{
+				jc.getScienceContext().setInProgress(jc.getScienceContext().getInProgress() + 1);
+			}
+			else if (j.getBlueprintTypeId() != j.getOutputTypeId())
+			{
+				// Output is a blueprint but type id's match, therefore it's invention, increase science context
+				if(characterRepo.findByKey(ItemType.class, j.getOutputTypeId()).getTypeName().contains("Blueprint"))
+				{
+					jc.getScienceContext().setInProgress(jc.getScienceContext().getInProgress() + 1);
+				}
+				else
+				{
+					jc.getIndustryContext().setInProgress(jc.getIndustryContext().getInProgress() + 1);
+				}
+			}
+		}
+	}
 }

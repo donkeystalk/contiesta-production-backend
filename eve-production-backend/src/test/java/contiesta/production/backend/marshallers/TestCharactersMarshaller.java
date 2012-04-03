@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import contiesta.production.backend.models.EveCharacter;
+import contiesta.production.backend.models.Job;
 import contiesta.production.backend.utils.ClassPathResourceUtil;
 
 @ContextConfiguration("classpath:config/backend-context.xml")
@@ -34,5 +35,14 @@ public class TestCharactersMarshaller {
 		List<String> characters = marshaller.findCharacterIds(xml);
 		assertNotNull(characters);
 		assertEquals(3,characters.size());
+	}
+	
+	@Test
+	public void testFindNumberOfJobsForCharacter()
+	{
+		String xml = ClassPathResourceUtil.getResourceAsString("testFiles/industry.xml");
+		List<Job> jobs = marshaller.findNumberOfJobsForCharacter(xml);
+		assertNotNull(jobs);
+		assertEquals(2, jobs.size());
 	}
 }

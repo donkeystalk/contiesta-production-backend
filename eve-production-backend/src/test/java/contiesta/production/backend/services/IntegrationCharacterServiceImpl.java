@@ -38,7 +38,7 @@ public class IntegrationCharacterServiceImpl {
 		ApiContext context = new ApiContext();
 		context.setKeyId(KEY_ID);
 		context.setVerificationCode(VERIFICATION_CODE);
-		service.removeApiContext(context);
+		service.removeApiContext(KEY_ID);
 	}
 	
 	@Test
